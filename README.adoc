@@ -22,3 +22,11 @@ Curl will show response
 <
 * Closing connection 0
 ```
+
+== FIX
+
+To be able to capture the linked https://github.com/netty/netty/issues/12769[issue], we need to have a handler that:
+
+* Extends from `ChannelInboundHandlerAdapter` class, not directly implements interface `ChannelHandler` or `ChannelInboundHandler`.
+* Override method `channelRead` which allows checking the status of the request and obtain errors.
+* Continue pipeline with `super.channelRead(ctx, msg);`, else the server hangs.
